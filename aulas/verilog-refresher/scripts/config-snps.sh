@@ -1,0 +1,1 @@
+source /Tools/synopsys/snps.sh
