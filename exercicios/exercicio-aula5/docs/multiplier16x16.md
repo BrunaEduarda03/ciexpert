@@ -181,20 +181,29 @@ Todos os 9 cenários passaram. O módulo está funcionando corretamente.
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O multiplicador em hardware é muito mais poderoso que fazer multiplicação por software — que exige vários ciclos de somador. Em hardware dedicado, o produto sai em **1 ciclo de clock**.
+
+**Onde aparece na vida real:**
+- **Processamento de sinal (DSP):** filtros digitais calculam `y[n] = Σ h[k] * x[n-k]`. Cada termo exige uma multiplicação. Um filtro de áudio rodando a 48 kHz com 64 coeficientes precisa de 3 milhões de multiplicações por segundo — impossível sem hardware dedicado.
+- **Processamento de imagem:** redimensionar, rotacionar ou aplicar filtros numa imagem envolve multiplicar valores de pixel por coeficientes. GPUs têm milhares de multiplicadores em paralelo por esse motivo.
+- **Criptografia:** algoritmos como RSA e AES fazem multiplicações de números muito grandes. O multiplicador de hardware é a base de aceleradores criptográficos em chips de segurança.
+- **Controle PID:** controladores industriais calculam `saída = Kp*erro + Ki*integral + Kd*derivada` — três multiplicações por ciclo de controle, em tempo real.
+- **Geração de PWM com duty cycle variável:** calcular o valor do comparador para um dado percentual de duty cycle exige uma multiplicação.
+
+**Quando escolher um multiplicador de 16×16:** quando os seus operandos são valores de 16 bits (0–65.535) e você precisa do produto completo sem truncamento. Para áudio (amostras de 16 bits), imagem (pixels de 8–16 bits com coeficientes de 8 bits) e a maioria dos controles industriais, 16×16→32 é o tamanho padrão.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=multiplier16x16`:
 
 ![waveform multiplier16x16](../images/image-1.png)
 
-**O que é visível na imagem:**
+O multiplicador tem um detalhe sutil que o waveform revela: existe uma **latência de 1 ciclo de clock** entre a mudança das entradas e o aparecimento do resultado em `multi_out`. Você consegue ver isso observando que `op_a` e `op_b` mudam, mas `multi_out` só atualiza no ciclo seguinte. É o comportamento esperado de qualquer circuito registrado.
 
-**`multi_out[31:0]`**: começa em `00000000` (reset) e muda a cada teste — dá para acompanhar: `7d26d82e` (0xAAAA × 0xBBBB), `048d0c84` (0x4444 × 0x1111), `0000ffff` (1 × 0xFFFF), `00000000` (0 × 0xFFFF), `fffe0001` (0xFFFF × 0xFFFF — caso máximo), `00000100` (16 × 16 = 256), `00010000` (256 × 256 = 65536), `06260060` (teste de comutatividade: 0x1234 × 0x5678 e depois 0x5678 × 0x1234 — mesmo resultado). A latência de 1 ciclo entre a mudança de `op_a`/`op_b` e a atualização de `multi_out` é visível.
+Os valores em `multi_out` percorrem a sequência dos testes: começa em zero (pós-reset), passa pelos produtos de cada par de entrada — `7d26d82e`, `048d0c84`, `0000ffff`, `00000000`, `fffe0001`, `00000100`, `00010000` — e fecha com `06260060` aparecendo **duas vezes**, que é a verificação de comutatividade: `0x1234 × 0x5678` e `0x5678 × 0x1234` produzem o mesmo resultado.
 
-**`op_a[15:0]` e `op_b[15:0]`**: mudam antes de cada borda de clock, preparando os operandos. Os valores `aaaa`, `4444`, `0001`, `0000`, `ffff`, `0010`, `0100`, `1234`, `5678` são legíveis diretamente.
-
-**`tests[31:0]`**: sobe de `0` até `9`, confirmando 9 testes executados.
-
-**`errors[31:0]`**: permanece em `0` — zero falhas.
-
-**`reset_n`**: pulso baixo breve no início; depois fica alto. O `multi_out` vai a `00000000` imediatamente quando `reset_n` cai — comportamento assíncrono.
+O caso `0xFFFF × 0xFFFF = 0xFFFE0001` é o mais importante: é o produto máximo possível, e ele cabe perfeitamente em 32 bits sem overflow. `errors` permanece em 0 em todos os 9 testes.

@@ -7,7 +7,6 @@ RTL_FILES = rtl/$(BLOCK).v
 TB_FILES  = tb/tb_$(BLOCK).v
 
 # ─── Fluxo: Icarus Verilog + Surfer ───────────────────────────
-# Uso:
 #   make sim BLOCK=adder32      → compila + roda + mostra resultado no terminal
 #   make wave BLOCK=adder32     → compila + roda + abre waveform no Surfer
 #   make sim_clean              → remove artefatos do Icarus

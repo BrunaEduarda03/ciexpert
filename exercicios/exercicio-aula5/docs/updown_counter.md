@@ -246,26 +246,29 @@ A contagem retomou exatamente de onde parou, com a relação `5 + 10 = 15` manti
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O contador up/down é usado quando a direção de contagem precisa mudar dinamicamente — não é só contar para cima até o limite e reiniciar, mas sim subir e descer conforme eventos externos.
+
+**Onde aparece na vida real:**
+- **Controle de posição de motor:** encoders de motor geram pulsos quando o eixo gira. Para frente, o contador sobe; para trás, desce. O valor atual do contador representa a posição absoluta do eixo. Braços robóticos e CNCs usam isso.
+- **Controle de volume:** botões de girar (rotary encoder) em aparelhos de som, rádios de carro e amplificadores geram pulsos up/down. O contador acumula a posição e o valor é o volume atual.
+- **Buffers e FIFOs:** um FIFO com entradas e saídas independentes usa um contador up/down para rastrear quantos elementos estão armazenados. Entrada de dado: sobe. Saída de dado: desce. Quando chega a zero, o FIFO está vazio.
+- **Varredura de menus e listas:** interfaces embarcadas (displays LCD com botões +/-) navegam por itens usando um contador up/down que respeita os limites (não sobe além do máximo, não desce abaixo de zero).
+- **Controle de fase em modulação:** sistemas de comunicação que precisam ajustar fase dinamicamente (PLL digital, moduladores) usam contadores up/down para avançar ou recuar o acumulador de fase.
+
+**Quando escolher up/down em vez de só up:** sempre que o sistema puder andar nos dois sentidos — posição física, contagem de ocupação, navegação de interface, fase de sinal. Para contagem simples de tempo ou eventos unidirecionais, um contador só-up é suficiente e mais simples.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=updown_counter`:
 
 ![waveform updown_counter](../images/image-4.png)
 
-**O que é visível na imagem:**
+O waveform desse circuito é visualmente simétrico: `up_counter` sobe (0→1→2→...→F→0) enquanto `down_counter` desce (F→E→D→...→0→F) no mesmo ritmo. Em qualquer ponto da simulação, os dois valores somam 15. É como dois ponteiros num relógio girando em sentidos opostos.
 
-Este é o waveform com mais sinais visíveis porque o testbench expõe suas variáveis internas (`exp_up`, `exp_dn`, `frozen_up`, `frozen_dn`, `step`, `timeout`).
+O momento mais curioso é o **pulso de `resetn`**. Você vê o sinal mudar — mas os contadores não reagem absolutamente nada. É o bug de `posedge` vs `negedge` sendo capturado visualmente: o bloco `always` é ativado na subida de `resetn`, mas nesse momento `!resetn` é falso, então o reset nunca executa.
 
-**`up_counter[3:0]`** e **`down_counter[3:0]`** (últimas duas linhas): os dois contadores evoluem em sincronia. Você pode acompanhar a escada crescente de `up` (0001, 0010, 0011...) e a escada decrescente de `down` (1110, 1101, 1100...) confirmando a simetria `up + down = 15` em todo instante.
-
-**`step[31:0]`**: incrementa de `0` até `20`, marcando cada passo dos 16 testes de contagem mais os testes de freeze e resume. É o "índice do for loop" do testbench.
-
-**`timeout[31:0]`**: aparece com valor `UNDEF` inicialmente e depois `0, 1, 2, 3... 14` na parte final da simulação — é o contador do while loop que aguarda `up_counter` chegar em `0xF` antes do teste de wrap.
-
-**`exp_up[3:0]`** e **`exp_dn[3:0]`**: os valores esperados calculados pelo testbench a cada passo — começam como `X` (UNDEF), depois acompanham os contadores.
-
-**`resetn`**: pulso baixo breve no início, mas **nenhuma mudança visível** em `up_counter` ou `down_counter` — confirmação visual do bug. O reset não funciona.
-
-**`en`**: cai para `0` brevemente (dois ciclos de freeze no meio da simulação) — os contadores param durante esse período.
-
-**`tests[31:0]`**: sobe até `20`. **`errors[31:0]`**: permanece em `0`.
+Os sinais internos do testbench (`exp_up`, `exp_dn`) ficam visíveis e confirmam que os valores esperados batem com os obtidos a cada passo. Quando `en=0`, os contadores param completamente — ao religar, retomam exatamente de onde pararam. O `step` sobe até 20 marcando cada ciclo testado. `errors` permanece em 0.

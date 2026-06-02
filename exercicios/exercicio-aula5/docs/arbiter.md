@@ -286,24 +286,31 @@ A propriedade mais importante: em todos os 20 ciclos verificados, a exclusão m�
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O árbitro é o **guardião de recursos compartilhados**. Em qualquer sistema onde dois ou mais agentes precisam acessar o mesmo recurso — e só um pode usar por vez — um árbitro é necessário.
+
+**Onde aparece na vida real:**
+- **Baramentos compartilhados (AXI, AHB, Wishbone):** SoCs modernos têm múltiplos masters (CPU, DMA, GPU) competindo pelo barramento de memória. O árbitro decide quem acessa em cada ciclo, evitando colisões. O protocolo AXI do ARM tem árbitro embutido.
+- **Controlador de memória DDR:** quando CPU e DMA pedem acesso à RAM simultaneamente, o árbitro escolhe quem vai primeiro. Sem ele, os dois escreveriam na mesma posição de memória e os dados se corromperiam.
+- **DMA (Direct Memory Access):** múltiplos canais de DMA (um para áudio, um para rede, um para disco) disputam o barramento. O árbitro com prioridade garante que o canal de áudio (mais crítico em latência) seja atendido primeiro.
+- **I2C multi-master:** no protocolo I2C, dois masters podem tentar iniciar transferência ao mesmo tempo. A arbitragem detecta a colisão e define quem continua.
+- **GPU scheduling:** dentro de uma GPU, centenas de threads competem pelas unidades de execução. O árbitro (scheduler) distribui o trabalho.
+
+**Por que prioridade importa:** nem todos os clientes são iguais. Um controlador de vídeo que perde o acesso ao barramento por muito tempo causa glitch na tela. Um processo de background pode esperar. O `priority_sel` deste árbitro modela exatamente esse cenário.
+
+**Quando usar um árbitro:** sempre que dois ou mais agentes puderem acessar simultaneamente um recurso que só aceita um por vez — memória, barramento, periférico, arquivo. Sem árbitro, você tem condição de corrida em hardware.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=arbiter`:
 
 ![waveform arbiter](../images/image-9.png)
 
-**O que é visível na imagem:**
+O padrão de handshaking do árbitro é o mais rico de observar. Quando um cliente levanta seu `req`, o `grant` não aparece imediatamente — há um **delay de 2 ciclos de clock**. Você consegue medir esse espaço diretamente no waveform: no primeiro ciclo o req é capturado em `client_req_d`, no segundo a FSM transita para o estado CLINET e `grant` aparece. Esse pipeline de 2 registradores é a arquitetura da máquina de estados.
 
-Esta é a simulação mais longa (~400.000 ps), com 31 testes e o loop de exclusão mútua de 20 ciclos.
+A propriedade mais importante está visível a olho nu: **`grant1` e `grant2` nunca estão em 1 ao mesmo tempo**. Em nenhum dos 20 ciclos do loop de exclusão mútua — com requisições aleatórias — você encontra os dois sinais levantados simultaneamente. É a garantia fundamental de um árbitro, confirmada no waveform.
 
-**`client1_req` e `client2_req`**: série de pulsos altos — cada cenário tem seu padrão: pulso isolado de req1 (cenário 1), pulso isolado de req2 (cenário 2), pulsos simultâneos (cenários 3 e 4). Na parte final da simulação (loop de exclusão mútua), os dois mudam rapidamente a cada ciclo.
-
-**`o_grant1` e `o_grant2`**: respondem aos pedidos com **exatamente 2 ciclos de delay** após o pedido — esse "espaço" entre req e grant é a latência do pipeline de 2 registradores em cascata (`client_req_d` + `curr_state`). A exclusão mútua é visualmente imediata: em nenhum instante de tempo `grant1` e `grant2` estão ambos em `1`.
-
-**`priority_sel`**: muda entre os cenários — fica em `1` (cliente 1 com prioridade) para os cenários 1 e 3, vai para `0` (cliente 2 com prioridade) para os cenários 2 e 4, e volta para `1` no loop final.
-
-**`i[31:0]`**: contador do loop de exclusão mútua — aparece no final da simulação, incrementando de `0` até `20`.
-
-**`tests[31:0]`**: sobe até `31`. **`errors[31:0]`**: permanece em `0` durante toda a simulação.
-
-O padrão de handshaking é claro: `req` sobe → 2 clocks depois `grant` sobe por 1 ciclo → `grant` cai → FSM retorna a IDLE. Se o segundo cliente estava esperando, `grant2` sobe imediatamente no ciclo seguinte sem passar por IDLE.
+O `priority_sel` muda entre os cenários e você consegue ver o efeito: quando os dois clientes pedem ao mesmo tempo, o waveform mostra qual dos dois recebeu `grant` primeiro dependendo do valor de `priority_sel`. O `i` sobe até 20 rastreando o loop de testes aleatórios. `tests=31`, `errors=0` — todos os cenários cobertos.

@@ -205,22 +205,30 @@ O RTL está correto em todos os cenários testados.
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O mux é o **seletor** do mundo digital. Você o usa sempre que tem várias fontes de dado e precisa escolher qual delas vai seguir adiante.
+
+**Onde aparece na vida real:**
+- **Debug e monitoramento:** chips com muitos sinais internos usam mux para expor apenas 1 sinal por vez em um pino de teste externo. Você escolhe qual sinal observar pelo valor de `sel` — sem precisar de um pino para cada sinal.
+- **Seleção de fonte de clock:** FPGAs e SoCs usam mux para escolher entre clock interno e externo, ou entre frequências diferentes, dependendo do modo de operação.
+- **Data path em ALUs:** a Unidade Lógica Aritmética de processadores usa mux para selecionar os operandos corretos antes de cada operação — do registrador A, B, ou de um imediato da instrução.
+- **Vídeo:** multiplexadores de pixel escolhem qual fonte de imagem (câmera, memória, gerador de texto) aparece na saída de vídeo.
+
+**Quando escolher um mux:** sempre que a pergunta for *"tenho N sinais e preciso escolher 1 para processar"*. É o inverso do demux, e os dois frequentemente aparecem juntos em sistemas reais.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=8x1mux`:
 
 ![waveform mux8x1](../images/image-6.png)
 
-**O que é visível na imagem:**
+A simulação tem duas fases bem distintas que você enxerga claramente no waveform.
 
-**`din[7:0]`**: muda a cada teste. Na primeira fase (testes de sel correto), você vê o padrão walking-bit: `01` → `02` → `04` → `08` → `10` → `20` → `40` → `80`. Na segunda fase (testes de bit=0 para cada canal), `din` segue o padrão complementar: `fe` → `fd` → `fb` → `f7` → `ef` → `df` → `bf` → `7f` — cada um com o bit do canal selecionado em `0` e os demais em `1`.
+Na **primeira fase**, `din` exibe o padrão walking-bit (`01 → 02 → 04 → ... → 80`) — a cada ciclo, apenas um bit de `din` está em 1, e é exatamente o bit que `sel` aponta. O resultado é que `dout` fica em 1 o tempo todo. É a prova visual de que o mux está pegando o bit certo em cada canal.
 
-**`dout`** (terceira linha, 1 bit): permanece em `1` durante toda a primeira fase (o bit selecionado vale `1` em cada teste). Na segunda fase, vai para `0` (o bit selecionado vale `0`).
+Na **segunda fase**, `din` recebe o padrão complementar (`FE → FD → FB → ... → 7F`) — todos os bits em 1, exceto o que `sel` aponta. `dout` vai para 0 em todos os ciclos. Isso confirma o outro lado da moeda: o mux só entrega o que está no canal selecionado, nada mais.
 
-**`sel[2:0]`**: incrementa de `0` a `7` duas vezes — uma para cada fase de testes.
-
-**`i[31:0]`**: índice do loop — sobe de `0` a `7` em cada fase, depois aparece `0`, `1`, `2`... nos testes extras.
-
-**`rstn`**: pulso baixo no início — `dout` vai a `0` imediatamente.
-
-**`tests[31:0]`**: sobe até `19`. **`errors[31:0]`**: permanece em `0`.
+`sel` incrementa de 0 a 7 sincronizado com as duas fases. O `rstn` aparece como pulso no início, zerando `dout` antes de qualquer teste começar. `errors` permanece em 0 do início ao fim.
