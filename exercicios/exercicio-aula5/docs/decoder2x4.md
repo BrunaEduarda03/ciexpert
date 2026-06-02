@@ -195,22 +195,28 @@ O decodificador está funcionando perfeitamente.
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O decoder é o **tradutor de endereços** do mundo digital. Ele converte um número compacto (binário) em um sinal físico que ativa exatamente um destino.
+
+**Onde aparece na vida real:**
+- **Decodificação de endereços de memória:** o processador emite um endereço binário (ex: `0b10` = posição 2). O decoder ativa o sinal `CS2` (chip select 2) e desativa os demais chips. É o que permite ter vários chips de memória no mesmo barramento.
+- **Seleção de linha em displays de matriz:** teclados e painéis de LEDs organizam os elementos em linhas e colunas. Um decoder seleciona qual linha está ativa a cada ciclo, varrendo o painel inteiro em milissegundos.
+- **Controle de periféricos:** em microcontroladores, os endereços de registradores de periféricos (UART, SPI, GPIO) são decodificados para ativar o periférico correto quando o processador escreve naquele endereço.
+- **FSMs:** máquinas de estado frequentemente usam decoder internamente para converter o estado binário em sinais de controle one-hot para cada parte do circuito.
+
+**Quando escolher um decoder:** sempre que você tiver um número (endereço, índice, estado) e precisar ativar fisicamente um entre N destinos. Se você já tem o one-hot e quer o número de volta, use o encoder.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=decoder2x4`:
 
 ![waveform decoder2x4](../images/image-7.png)
 
-**O que é visível na imagem:**
+O primeiro detalhe que chama atenção é o sinal `ones[31:0]`: ele aparece como **X (indefinido)** antes do enable ser ativado — no Surfer aparece em vermelho. Não é um erro: é o testbench ainda não tendo contado os bits de `dout` porque o circuito nem começou a operar. Assim que o enable sobe, `ones` fixa em 1 e não sai mais dali. Essa linha é a "prova automática" de que `dout` é sempre one-hot — nunca zero, nunca dois bits ao mesmo tempo.
 
-**`dout[3:0]`**: exibe o padrão one-hot com clareza. A sequência `1` → `2` → `4` → `8` (em hexadecimal) corresponde a `0001` → `0010` → `0100` → `1000` em binário — exatamente um bit ativo se deslocando para a esquerda a cada ciclo. Esse padrão se repete pois o testbench varre `din` de 0 a 3 duas vezes.
+A linha `dout[3:0]` conta a história principal: `1 → 2 → 4 → 8` (em hexadecimal), que em binário é `0001 → 0010 → 0100 → 1000`. O bit aceso migra uma casa para a esquerda a cada ciclo, como uma lâmpada percorrendo os andares do elevador. `din` sobe de 0 a 3 em sincronia — entrada e saída dançam juntas.
 
-**`din[1:0]`**: cicla entre `0` → `1` → `2` → `3` em sincronia com `dout`.
-
-**`ones[31:0]`**: começa como `UNDEF` (X) antes do reset/enable, depois fixa em `1` — confirmando que exatamente um bit está ativo em `dout` em todos os ciclos válidos. Essa linha é a "prova automática" da propriedade one-hot.
-
-**`i[31:0]`**: índice do loop — cicla de `0` a `3` duas vezes (a segunda passagem testa one-hot explicitamente).
-
-**`rstn`**: pulso baixo no início — `dout` vai a `0` imediatamente (assíncrono).
-
-**`tests[31:0]`**: sobe até `10`. **`errors[31:0]`**: permanece em `0`.
+O `rstn` no início garante que `dout` começa zerado, sem nenhum bit "fantasma" ativo por acidente. `errors` permanece em 0 em todos os 10 testes.

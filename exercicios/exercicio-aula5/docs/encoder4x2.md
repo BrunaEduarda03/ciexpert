@@ -197,24 +197,28 @@ O encoder está correto.
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O encoder é o **compactador de eventos físicos**. Ele converte sinais paralelos do mundo físico (botões, sensores, interruptores) em um código numérico compacto que o processador consegue trabalhar.
+
+**Onde aparece na vida real:**
+- **Teclados e painéis de botões:** cada tecla física é um fio. O encoder converte "qual fio está ativo" em um número — o código da tecla — para o microcontrolador processar. Sem o encoder, você precisaria de um pino do processador para cada botão.
+- **Detecção de prioridade (priority encoder):** em sistemas com múltiplas interrupções simultâneas, o encoder identifica qual interrupção tem maior prioridade e entrega o número dela para o controlador de interrupções.
+- **Sensores industriais:** sensores de posição absoluta (encoders ópticos, por exemplo) geram código Gray ou one-hot — e um encoder digital converte esse padrão em valor numérico para o sistema de controle.
+- **Interfaces com hardware legado:** chips antigos muitas vezes expõem seus estados como sinais individuais. O encoder é o adaptador que traduz esses sinais para os barramentos modernos.
+
+**Quando escolher um encoder:** sempre que você tiver sinais físicos paralelos (um por evento/botão/sensor) e precisar convertê-los em um número para processar. É o passo de entrada do mundo físico para o mundo digital.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=encoder4x2`:
 
 ![waveform encoder4x2](../images/image-8.png)
 
-**O que é visível na imagem:**
+Se você colocar o waveform do decoder e o do encoder lado a lado, vai ver que são espelhos. No decoder, `din` subia (0→1→2→3) e `dout` exibia o padrão one-hot. Aqui no encoder é o contrário: `din` exibe o padrão one-hot (`1 → 2 → 4 → 8`) e `dout` sobe em binário (`00 → 01 → 10 → 11`). A operação inversa confirmada visualmente.
 
-**`din[3:0]`**: cicla pelos padrões one-hot — `1` → `2` → `4` → `8` (hex) = `0001` → `0010` → `0100` → `1000`. O "1" se desloca para a esquerda. O testbench executa o ciclo duas vezes (uma para testes básicos, outra para o freeze sweep).
+O momento mais interessante é o **pulso de `en=0`** no meio da simulação. Repare que `din` continua mudando — o testbench não para — mas `dout` fica completamente parado, congelado no último valor. Quando `en` volta para 1, `dout` retoma normalmente. É o comportamento de "pausa" que todo registrador com enable deve ter.
 
-**`dout[1:0]`**: responde com os números binários correspondentes — `0` → `1` → `2` → `3`. É exatamente o inverso do que o decoder faz: o decoder pega `01` e gera `0010`; o encoder recebe `0010` e retorna `01`.
-
-**`en`**: visível com uma breve queda (pulso baixo) no meio da simulação — é o teste de freeze com `en=0`. Durante esse período, `dout` congela no último valor apesar de `din` mudar.
-
-**`i[31:0]`**: índice do loop — cicla de `0` a `4` em cada rodada de testes.
-
-**`rstn`**: pulso baixo no início — `dout` vai a `00` imediatamente.
-
-**`tests[31:0]`**: sobe até `10`. **`errors[31:0]`**: permanece em `0`.
-
-A relação espelho com o decoder é visualmente confirmada: onde o decoder mostrava `dout` crescendo (0001 → 0010 → 0100 → 1000), o encoder mostra `dout` crescendo em binário (00 → 01 → 10 → 11) com os mesmos dados na ordem inversa.
+O `rstn` zera `dout` para `00` no início. Entradas inválidas (como `0000` com nenhum bit ativo) passam pelo `default` do `case` e retornam `00` sem travar o circuito. `errors` permanece em 0 em todos os 12 testes.

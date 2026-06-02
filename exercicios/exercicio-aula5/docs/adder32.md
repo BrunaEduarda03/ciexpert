@@ -1,6 +1,6 @@
 # Somador 32 bits (adder32)
 
-## 1. O que é este circuito?
+## 1. Sobre o circuito
 
 Pense numa calculadora de bolso que soma dois números. Você digita o primeiro número, digita o segundo, aperta igual — e o resultado aparece no visor. Se o resultado for grande demais para caber no visor (por exemplo, ele só tem 8 dígitos mas o resultado tem 9), o visor mostra os 8 últimos dígitos e acende uma luz de "overflow" ou "carry".
 
@@ -216,22 +216,29 @@ Todos os cenários — incluindo os casos de overflow — foram tratados correta
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O somador é o **bloco aritmético mais fundamental** de qualquer sistema digital. Quase toda operação em hardware passa por uma soma em algum momento.
+
+**Onde aparece na vida real:**
+- **ALU de processadores:** toda instrução de soma, subtração (soma do complemento de 2), incremento de ponteiro e cálculo de endereço usa um somador. É o coração da CPU.
+- **Endereçamento de memória:** `endereço_base + offset` é uma soma. Cada acesso à memória com indexação passa por um somador.
+- **Acumuladores em DSP:** filtros digitais (FIR, IIR) acumulam produtos — cada ciclo soma um novo valor ao acumulador. O carry indica quando o sinal saturou.
+- **Contadores de hardware:** um contador nada mais é que um somador onde um dos operandos é sempre 1.
+- **Cálculo de checksum:** protocolos de comunicação (CRC, soma de verificação) somam bytes de uma mensagem para detectar erros de transmissão.
+
+**Quando escolher um somador de 32 bits:** quando seus operandos chegam a valores acima de 65.535 (limite de 16 bits). Para endereçamento de memória em sistemas com mais de 64KB, você já precisa de 32 bits. O carry é indispensável em qualquer aplicação onde overflow precisa ser detectado em vez de silenciado.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=adder32`:
 
 ![waveform adder32](../images/image.png)
 
-**O que é visível na imagem:**
+O sinal mais revelador é o **`carry_out`**: ele fica em 0 na maior parte do tempo, mas sobe para 1 exatamente nos momentos em que a soma não cabe em 32 bits. É como uma luz de alerta piscando só quando há estouro — você consegue ver visualmente quais combinações de entrada causaram o overflow.
 
-**`adder_out[31:0]`** (primeira linha): muda a cada teste — você acompanha a sequência completa: `00000000` (reset), `99999998` (0xAAAAAAAA+0xEEEEEEEE, overflow), `09bcda98`, `d8888887`, `22222222`, `00000000`, `fffffffe`, `00000000` (0xFFFFFFFF+1, que "deu a volta" para zero), `a9ac79ad`. O último valor antes do `en` cair demonstra o freeze.
+O caso mais dramático é quando `op_a=0xFFFFFFFF` e `op_b=0x00000001`: `adder_out` vai para **`0x00000000`** — o contador "deu a volta" — e `carry_out` sobe para 1. O resultado real seria `0x100000000`, que não cabe em 32 bits. O hardware guarda os 32 bits inferiores (zero) e avisa com o carry.
 
-**`carry_out`** (segunda linha): fica em `0` na maioria dos testes e sobe visivelmente para `1` nos dois casos de overflow — especialmente nítido nas somas com `0xAAAAAAAA + 0xEEEEEEEE` e `0xFFFFFFFF + 0xFFFFFFFF`.
-
-**`en`**: sobe após o reset e fica alto durante toda a simulação; cai brevemente no final (teste de freeze com en=0) e depois o reset assíncrono final zera tudo.
-
-**`tests[31:0]`**: contador que sobe de `0` até `10`, confirmando que todos os 10 testes foram executados em sequência.
-
-**`errors[31:0]`**: permanece em `0` do início ao fim — nenhuma falha em nenhum teste.
-
-**`op_a` e `op_b`**: mudam a cada ciclo de clock, representando os pares de operandos de cada teste. É possível identificar os valores `aaaaaaaa`, `07777777`, `cccccccc`, `11111111`, `00000000`, `ffffffff`, `12345678`, `deadbeef` diretamente no waveform.
+`adder_out` muda a cada ciclo acompanhando os pares de entrada: você consegue identificar cada teste pela sequência de valores — `99999998`, `09bcda98`, `d8888887`, `22222222`, `00000000`, `fffffffe`. Quando `en` cai no final, `adder_out` congela no último valor calculado. `errors` permanece em 0 em todos os 10 testes.

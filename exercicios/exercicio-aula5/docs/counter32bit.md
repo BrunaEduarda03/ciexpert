@@ -233,22 +233,33 @@ O testbench detecta e documenta o bug. O design funciona nos testes porque foram
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O contador é um dos blocos **mais usados em hardware**. Todo sistema digital que precisa medir tempo, cadenciar eventos ou gerar sinais periódicos usa um contador por baixo dos panos.
+
+**Onde aparece na vida real:**
+- **Timers e watchdogs:** microcontroladores têm contadores de 16 ou 32 bits que contam ciclos de clock. Quando chegam a um valor alvo, disparam uma interrupção. É assim que `delay_ms(100)` funciona — um contador contando até o valor equivalente a 100 ms de clock.
+- **Geração de PWM:** o sinal PWM (usado para controlar motores, LEDs com dimmer, servos) é gerado comparando o contador com um threshold. Quando `counter < duty_cycle`, saída = 1; senão saída = 0.
+- **Baud rate de UART:** a transmissão serial precisa de um clock derivado. Um contador divide o clock do sistema para gerar a frequência correta (9600, 115200 bps).
+- **Endereçamento sequencial:** leitura de memória FIFO, streaming de dados para DAC, escrita em buffers — tudo usa um contador como ponteiro que avança automaticamente.
+- **Medição de frequência:** conta pulsos externos durante um intervalo fixo. No final, o valor do contador é a frequência medida.
+
+**O sinal de overflow é crítico** em qualquer aplicação onde o contador pode atingir o limite: timers de watchdog precisam detectar o overflow para resetar o sistema; acumuladores de DSP precisam saturar ou sinalizar overflow para não corromper o sinal.
+
+**Quando escolher 32 bits:** quando você precisa contar por longos períodos sem overflow. Com clock de 100 MHz e contador de 32 bits, o overflow ocorre a cada ~42 segundos. Para contadores de tempo real ou de posição de motor, 32 bits é o mínimo prático.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=counter32bit`:
 
 ![waveform counter32bit](../images/image-3.png)
 
-**O que é visível na imagem:**
+Esta é a simulação mais longa (~200.000 ps) — precisa contar desde `0xFFFFFFF8` até o wrap. Vale a pena.
 
-Esta é a simulação mais longa (cerca de 200.000 ps) porque precisa contar desde `0xFFFFFFF8` até o wrap em `0x00000000`.
+O waveform conta três momentos distintos. **Primeiro**, `counter_out` sobe linearmente de 0 — parece que vai ficar assim para sempre. **Segundo**, o sinal `load` aparece como um pulso fino de 1 ciclo e `counter_out` dá um salto brusco para `0xFFFFFFF8`. Junto disso, `overflow` sobe para 1 — porque esse valor alto já está na região de estouro.
 
-**`counter_out[31:0]`**: começa em `00000000` (reset), depois sobe nos primeiros ciclos (contagem de 0 a 4). Após o load, salta para o bloco de valores `fffff...` — você vê claramente a série `fffffff8`, `fffffff9`, ..., `ffffffff`. Logo em seguida, `counter_out` cai abruptamente para `00000000` (o wrap). Depois sobe novamente.
+**Terceiro e mais dramático**: `counter_out` passa por `0xFFFFFFFF` e no ciclo seguinte aparece `0x00000000`. Nesse exato instante, `overflow` cai de volta para 0 simultaneamente. Você vê os dois sinais mudando juntos na mesma borda de clock — é o wrap-around, o hodômetro voltando ao zero.
 
-**`counter_overflow`**: fica em `0` durante a contagem inicial. Sobe para `1` imediatamente após o load (o valor `0xFFFFFFF8` carregado já tem o bit 32 em `1`). Permanece `1` durante toda a contagem até `0xFFFFFFFF` e **cai para `0`** no mesmo ciclo do wrap — esse momento de `overflow: 1 → 0` junto com `counter_out: FFFFFFFF → 00000000` é o instante mais visualmente marcante do waveform.
-
-**`load`**: aparece como um pulso estreito (1 ciclo de clock) — visível como uma barra fina na linha `load`.
-
-**`en`**: sobe após reset, cai para `0` no teste de freeze (counter_out para), depois sobe novamente. Cai novamente antes do reset assíncrono final.
-
-**`tests[31:0]`**: sobe de `0` até `11`, confirmando 11 testes. **`errors[31:0]`**: permanece em `0`.
+O `en` cai brevemente no teste de freeze: `counter_out` para completamente, sem avançar um único valor. Ao religar, retoma de onde parou. `errors` permanece em 0 em todos os 11 testes.

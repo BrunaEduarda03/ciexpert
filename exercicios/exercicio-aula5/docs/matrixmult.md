@@ -227,20 +227,29 @@ Todos os 5 cenários passaram. O módulo está funcionando matematicamente corre
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+A multiplicação de matrizes é a **operação central** de gráficos 3D, visão computacional e inteligência artificial. Fazer isso em hardware dedicado é o que diferencia um chip de propósito geral de um acelerador especializado.
+
+**Onde aparece na vida real:**
+- **Transformações 3D (GPU):** mover, rotacionar e escalar um objeto 3D são todas multiplicações de matriz. Uma cena de videogame com 1 milhão de vértices exige 1 milhão de multiplicações matriciais por frame, a 60 fps. É por isso que GPUs têm centenas de unidades de multiplicação matricial.
+- **Redes neurais (TPU/NPU):** a operação `y = W·x + b` (camada de rede neural) é uma multiplicação de matrizes. Chips como o Google TPU e os chips de IA da Apple têm arrays massivos de multiplicadores matriciais para acelerar inferência.
+- **Processamento de imagem:** convolução (aplicar filtros como blur, sharpen, detecção de borda) é implementada como multiplicação de matrizes. Câmeras digitais e processadores de imagem (ISP) usam isso em hardware.
+- **Robótica e controle:** calcular posição e orientação de um braço robótico usa matrizes de transformação homogênea — multiplicadas em tempo real a cada ciclo de controle.
+- **Comunicação (MIMO):** sistemas de antenas múltiplas (Wi-Fi 6, 5G) processam sinais usando matrizes de canal. O receptor faz multiplicação matricial para separar os streams.
+
+**Quando escolher:** quando você precisa de transformações lineares em hardware e latência importa. Para matrizes pequenas (2×2, 4×4), faz sentido implementar em lógica direta como este circuito. Para matrizes grandes, usa-se arquiteturas sistólicas ou aceleradores.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=matrixmult`:
 
 ![waveform matrixmult](../images/image-2.png)
 
-**O que é visível na imagem:**
+O waveform tem um aviso logo no início que vale entender: **`Res[31:0]` aparece em vermelho** (estado X — indefinido) antes do reset. Isso não é uma falha do circuito — é o simulador sendo honesto. Registradores sem caminho de reset direto podem começar com qualquer valor após ligar. O estado X representa essa incerteza real que existiria em hardware físico.
 
-**`Res[31:0]`** — o destaque visual mais importante: começa como `xxxxxxxx` (marcado em vermelho no Surfer), indicando estado indefinido antes do reset. Isso confirma que o registrador não foi inicializado por reset — ele só recebe um valor válido quando `en=1` e as matrizes entram. Após o primeiro clock com enable, `Res` passa a mostrar resultados válidos: `01000001` (I×I), `01010101`, `02020202`, `03000003`, `08080808`, `00000000` (zero × B), `13162b32` ([[1,2],[3,4]] × [[5,6],[7,8]] = [[19,22],[43,50]]).
+Assim que o enable é ativado, `Res` passa a exibir os resultados dos testes em sequência: `01000001` (identidade × identidade), `01010101`, `02020202`, `03000003`, `08080808`, `00000000` (zero × qualquer = zero), e por fim `13162b32` — que é [[19,22],[43,50]] empacotado em 32 bits. Esse último resultado é o mais fácil de verificar manualmente: 1×5+2×7=19, 1×6+2×8=22, 3×5+4×7=43, 3×6+4×8=50.
 
-**`A[31:0]` e `B[31:0]`**: mudam a cada teste. Você consegue ler `01000001` (identidade), `01010101` (matriz all-ones), `01020304` etc.
-
-**`rstn`**: pulso baixo breve no início — note que `Res` não vai a zero nesse momento (o path de reset não alcança `Res` diretamente). O estado X persiste até o primeiro clock com en=1.
-
-**`tests[31:0]`**: sobe de `0` até `7`, confirmando 7 testes.
-
-**`errors[31:0]`**: permanece em `0` — nenhuma falha.
+O `rstn` aparece como pulso no início, mas `Res` não zera nesse momento — o caminho de reset não alcança `Res` diretamente. O estado X persiste até o primeiro clock com `en=1`. `errors` permanece em 0 em todos os 7 testes.

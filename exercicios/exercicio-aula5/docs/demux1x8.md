@@ -207,22 +207,27 @@ Todos os cenários foram verificados e nenhum erro foi encontrado. O RTL está c
 
 ---
 
-## 8. Waveform da Simulação Real
+## 8. Na prática: para que serve e quando usar?
+
+O demux é o **roteador** do mundo digital. Você o usa sempre que tem um único dado de origem que precisa chegar a destinos diferentes dependendo de uma condição.
+
+**Onde aparece na vida real:**
+- **Seleção de memória:** um microcontrolador com 4 chips de RAM usa um demux para ativar o chip certo (chip select) com base no endereço. O barramento de dados chega igual para todos, mas só o chip selecionado responde.
+- **Controle de displays:** placas com múltiplos displays de 7 segmentos usam demux para ligar um display por vez muito rapidamente — o olho humano vê todos acesos ao mesmo tempo, mas na realidade só um está ativo a cada ciclo.
+- **Distribuição de interrupções:** em sistemas com múltiplos periféricos, o demux direciona um sinal de controle para o periférico certo sem interferir nos demais.
+
+**Quando escolher um demux:** sempre que a pergunta for *"tenho 1 sinal e preciso mandá-lo para um de N destinos"*. Se a pergunta for o inverso (*"tenho N sinais e preciso escolher 1"*), o circuito é o mux.
+
+---
+
+## 9. Waveform da Simulação Real
 
 A captura abaixo foi gerada no Surfer após rodar `make wave BLOCK=1x8demux`:
 
 ![waveform demux1x8](../images/image-5.png)
 
-**O que é visível na imagem:**
+Olhe para a linha `dout[7:0]` — ela conta a história do circuito sozinha. No começo, enquanto `rstn` está em 0, tudo é zeros. Quando o clock começa a funcionar, `dout` exibe um padrão que parece uma lâmpada caminhando: `01 → 02 → 04 → 08 → 10 → 20 → 40 → 80`. Cada número tem exatamente um bit aceso, e esse bit avança uma posição para a esquerda a cada ciclo. É o padrão one-hot em ação — visualmente muito claro.
 
-**`dout[7:0]`** (terceira linha): este é o sinal mais visualmente interessante. Você vê a sequência one-hot caminhando da direita para a esquerda: `01` → `02` → `04` → `08` → `10` → `20` → `40` → `80`. Cada valor tem exatamente um bit ativo, confirmando o comportamento one-hot do demux. Depois volta para `00` (teste de din=0) e reaparece `01` no final.
+O momento mais revelador acontece quando `din` cai para 0: a lâmpada se apaga. `dout` vai a zero mesmo com `sel` apontando para um canal válido. Isso prova que o demux não inventa dados — ele só distribui o que recebe. Se não chega nada na entrada, nada sai em nenhuma das 8 saídas.
 
-**`sel[2:0]`**: incrementa de `0` até `7` em sincronia com `dout`, depois reverte para `3` e `5` nos testes extras, e fecha em `0`.
-
-**`din`**: fica em `1` durante os testes principais, vai para `0` no teste de "din=0 apaga a saída".
-
-**`i[31:0]`**: o índice do loop do testbench — sobe de `0` até `8`, mostrando os 8 canais testados.
-
-**`rstn`**: pulso baixo breve no início — `dout` vai a `00` imediatamente (reset assíncrono), antes de qualquer clock.
-
-**`tests[31:0]`**: sobe de `0` até `12`. **`errors[31:0]`**: permanece em `0`.
+O `rstn` aparece como um pulso baixo curto no início. Repare que `dout` zera instantaneamente, sem esperar a próxima borda de clock — esse é o reset assíncrono funcionando. `sel` sobe de 0 a 7 acompanhando cada teste, e `errors` permanece em 0 do começo ao fim.
