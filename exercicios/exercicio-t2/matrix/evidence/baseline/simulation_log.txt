@@ -1,0 +1,323 @@
+vcs -full64 -sverilog -l ./vcs_logger.log -kdb -debug_access+all +ntb_random_seed=random -timescale=1ns/1ps -cm line+cond+fsm+branch+tgl tb/matrix_datatypes.sv dpi/refmod.c tb/matrix_if.sv rtl/matrixmult.v tb/matrix_assertion.sv tb/matrix_coverage.sv tb/matrix_scb.sv tb/matrix_seqr.sv tb/matrix_drv.sv tb/matrix_mon.sv tb/tb_matrix.sv
+                         Chronologic VCS (TM)
+       Version X-2025.06-SP2_Full64 -- Mon Jul 20 09:18:30 2026
+
+                    Copyright (c) 1991 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+
+Warning-[UNK_COMP_ARG] Unknown compile time plus argument used
+  Unknown compile time plus argument 'ntb_random_seed=random' is ignored.
+
+ + use `+plusarg_save' to bind in runtime plusargs;
+ + use `+plusarg_ignore' to suppress this message.
+Parsing design file 'tb/matrix_datatypes.sv'
+Parsing design file 'tb/matrix_if.sv'
+Parsing design file 'rtl/matrixmult.v'
+Parsing design file 'tb/matrix_assertion.sv'
+Parsing design file 'tb/matrix_coverage.sv'
+Parsing design file 'tb/matrix_scb.sv'
+Parsing design file 'tb/matrix_seqr.sv'
+Parsing design file 'tb/matrix_drv.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/matrix_drv.sv, 1
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Parsing design file 'tb/matrix_mon.sv'
+Parsing design file 'tb/tb_matrix.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/tb_matrix.sv, 15
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Top Level Modules:
+       matrix_tb
+TimeScale is 1 ns / 1 ps
+VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Starting vcs inline pass...
+6 modules and 0 UDP read.
+recompiling package matrix_datatypes_pkg
+recompiling module matrix_if
+recompiling module matrix2x2_mult
+recompiling module matrix_assertion
+recompiling module matrix_coverage
+recompiling module matrix_tb
+All of 6 modules done
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+gcc -w  -pipe -fPIC -O -I/Tools/synopsys/vcs/X-2025.06-SP2/include     -c ../dpi/refmod.c
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib -L/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1 refmod.o   objs/amcQw_d.o   _382331_archive_1.so   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs      -lvcsnew -ldistsimclient -lsimprofile -lreader_common /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/libBA.a -luclinative /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       ./../simv.daidir/vc_hdrs.o  _vcs_pli_stub_.o   /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_save_restore_new.o /Tools/synopsys/verdi/X-2025.06-SP2/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+CPU time: 1.288 seconds to compile + .590 seconds to elab + .820 seconds to link
+Verdi KDB elaboration done and the database successfully generated
+./simv +FSDB=matrix2x2.fsdb -cm line+cond+fsm+branch+tgl
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP2_Full64; Runtime version X-2025.06-SP2_Full64;  Jul 20 09:18 2026
+
+ VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Test started...
+[TB] FSDB file = matrix2x2.fsdb
+*Verdi* Loading libsscore_vcs202506.so
+FSDB Dumper for VCS, Release Verdi_X-2025.06-SP2, Linux x86_64/64bit, 11/27/2025
+(C) 1996 - 2025 by Synopsys, Inc.
+*Verdi* : Create FSDB file 'matrix2x2.fsdb'
+*Verdi* : Begin traversing the scopes, layer (0).
+*Verdi* : End of traversing.
+
+# --------------------------
+#
+# Baseline Test
+#
+# --------------------------
+# NUM_OF_SEQUENCES: 100
+dut_r 32'h3b5b34ec, rfm_r 32'h3b5b34ec
+pass
+dut_r 32'hf0927b75, rfm_r 32'hf0927b75
+pass
+dut_r 32'hf882b46e, rfm_r 32'hf882b46e
+pass
+dut_r 32'hb426ce4e, rfm_r 32'hb426ce4e
+pass
+dut_r 32'ha35e7756, rfm_r 32'ha35e7756
+pass
+dut_r 32'h95e2fb27, rfm_r 32'h95e2fb27
+pass
+dut_r 32'haec36779, rfm_r 32'haec36779
+pass
+dut_r 32'hecc07293, rfm_r 32'hecc07293
+pass
+dut_r 32'hefc52140, rfm_r 32'hefc52140
+pass
+dut_r 32'h1ae8b1cc, rfm_r 32'h1ae8b1cc
+pass
+dut_r 32'hca16ac79, rfm_r 32'hca16ac79
+pass
+dut_r 32'h7e38d83b, rfm_r 32'h7e38d83b
+pass
+dut_r 32'h277e18b9, rfm_r 32'h277e18b9
+pass
+dut_r 32'h53e73af6, rfm_r 32'h53e73af6
+pass
+dut_r 32'h924ece70, rfm_r 32'h924ece70
+pass
+dut_r 32'haaa2fab2, rfm_r 32'haaa2fab2
+pass
+dut_r 32'h585f6804, rfm_r 32'h585f6804
+pass
+dut_r 32'h08d634de, rfm_r 32'h08d634de
+pass
+dut_r 32'h999a8bf9, rfm_r 32'h999a8bf9
+pass
+dut_r 32'hef320b2a, rfm_r 32'hef320b2a
+pass
+dut_r 32'h96f7e878, rfm_r 32'h96f7e878
+pass
+dut_r 32'h5fc3bb2b, rfm_r 32'h5fc3bb2b
+pass
+dut_r 32'hd453f493, rfm_r 32'hd453f493
+pass
+dut_r 32'h9943dc62, rfm_r 32'h9943dc62
+pass
+dut_r 32'haefb8463, rfm_r 32'haefb8463
+pass
+dut_r 32'h7a92b0b2, rfm_r 32'h7a92b0b2
+pass
+dut_r 32'hdc110852, rfm_r 32'hdc110852
+pass
+dut_r 32'h5ef20caa, rfm_r 32'h5ef20caa
+pass
+dut_r 32'hd4602048, rfm_r 32'hd4602048
+pass
+dut_r 32'h0e376a73, rfm_r 32'h0e376a73
+pass
+dut_r 32'hf4883470, rfm_r 32'hf4883470
+pass
+dut_r 32'h0042bbb7, rfm_r 32'h0042bbb7
+pass
+dut_r 32'h7fe40dea, rfm_r 32'h7fe40dea
+pass
+dut_r 32'he256a4a0, rfm_r 32'he256a4a0
+pass
+dut_r 32'h7dff24fc, rfm_r 32'h7dff24fc
+pass
+dut_r 32'h2d84b328, rfm_r 32'h2d84b328
+pass
+dut_r 32'h58c0ea6f, rfm_r 32'h58c0ea6f
+pass
+dut_r 32'h98ec9872, rfm_r 32'h98ec9872
+pass
+dut_r 32'h16f02585, rfm_r 32'h16f02585
+pass
+dut_r 32'hfcce3a5d, rfm_r 32'hfcce3a5d
+pass
+dut_r 32'h64079d33, rfm_r 32'h64079d33
+pass
+dut_r 32'hba3e5db9, rfm_r 32'hba3e5db9
+pass
+dut_r 32'h29fbe19b, rfm_r 32'h29fbe19b
+pass
+dut_r 32'hb341e2d1, rfm_r 32'hb341e2d1
+pass
+dut_r 32'hed1062da, rfm_r 32'hed1062da
+pass
+dut_r 32'hf8e9606d, rfm_r 32'hf8e9606d
+pass
+dut_r 32'hafd2bb3a, rfm_r 32'hafd2bb3a
+pass
+dut_r 32'h027f39b0, rfm_r 32'h027f39b0
+pass
+dut_r 32'h8f1761a1, rfm_r 32'h8f1761a1
+pass
+dut_r 32'h517da814, rfm_r 32'h517da814
+pass
+dut_r 32'h37ba611e, rfm_r 32'h37ba611e
+pass
+dut_r 32'h284e57d4, rfm_r 32'h284e57d4
+pass
+dut_r 32'hcffb16ac, rfm_r 32'hcffb16ac
+pass
+dut_r 32'h714132b0, rfm_r 32'h714132b0
+pass
+dut_r 32'ha712f61c, rfm_r 32'ha712f61c
+pass
+dut_r 32'h48db00c7, rfm_r 32'h48db00c7
+pass
+dut_r 32'h03229986, rfm_r 32'h03229986
+pass
+dut_r 32'h154ecfda, rfm_r 32'h154ecfda
+pass
+dut_r 32'he250a85e, rfm_r 32'he250a85e
+pass
+dut_r 32'hf8248a0e, rfm_r 32'hf8248a0e
+pass
+dut_r 32'h4d2ffa58, rfm_r 32'h4d2ffa58
+pass
+dut_r 32'h2ac29b22, rfm_r 32'h2ac29b22
+pass
+dut_r 32'h7ac6a6a3, rfm_r 32'h7ac6a6a3
+pass
+dut_r 32'h3c427b63, rfm_r 32'h3c427b63
+pass
+dut_r 32'ha67a89d1, rfm_r 32'ha67a89d1
+pass
+dut_r 32'h6d5f3068, rfm_r 32'h6d5f3068
+pass
+dut_r 32'h2b6901bf, rfm_r 32'h2b6901bf
+pass
+dut_r 32'hd85184cf, rfm_r 32'hd85184cf
+pass
+dut_r 32'h7fdf0ff5, rfm_r 32'h7fdf0ff5
+pass
+dut_r 32'hb080284e, rfm_r 32'hb080284e
+pass
+dut_r 32'hec860590, rfm_r 32'hec860590
+pass
+dut_r 32'ha8199893, rfm_r 32'ha8199893
+pass
+dut_r 32'he7da5bd2, rfm_r 32'he7da5bd2
+pass
+dut_r 32'h97aa3b29, rfm_r 32'h97aa3b29
+pass
+dut_r 32'h29213808, rfm_r 32'h29213808
+pass
+dut_r 32'h4c7e8090, rfm_r 32'h4c7e8090
+pass
+dut_r 32'h5aca8ca2, rfm_r 32'h5aca8ca2
+pass
+dut_r 32'he87844d8, rfm_r 32'he87844d8
+pass
+dut_r 32'h9a324418, rfm_r 32'h9a324418
+pass
+dut_r 32'h64f4f0d5, rfm_r 32'h64f4f0d5
+pass
+dut_r 32'h870492d8, rfm_r 32'h870492d8
+pass
+dut_r 32'h8c4b9f8c, rfm_r 32'h8c4b9f8c
+pass
+dut_r 32'h61616f43, rfm_r 32'h61616f43
+pass
+dut_r 32'h22beb295, rfm_r 32'h22beb295
+pass
+dut_r 32'h39e91d72, rfm_r 32'h39e91d72
+pass
+dut_r 32'heb90c8a0, rfm_r 32'heb90c8a0
+pass
+dut_r 32'h1948344c, rfm_r 32'h1948344c
+pass
+dut_r 32'hff55baa8, rfm_r 32'hff55baa8
+pass
+dut_r 32'hb1cc9192, rfm_r 32'hb1cc9192
+pass
+dut_r 32'h49877bc5, rfm_r 32'h49877bc5
+pass
+dut_r 32'he436c874, rfm_r 32'he436c874
+pass
+dut_r 32'h761b3de1, rfm_r 32'h761b3de1
+pass
+dut_r 32'h58216e07, rfm_r 32'h58216e07
+pass
+dut_r 32'h2878015f, rfm_r 32'h2878015f
+pass
+dut_r 32'h2e79fe7f, rfm_r 32'h2e79fe7f
+pass
+dut_r 32'hde368222, rfm_r 32'hde368222
+pass
+dut_r 32'hf888ade3, rfm_r 32'hf888ade3
+pass
+dut_r 32'h126a96bb, rfm_r 32'h126a96bb
+pass
+dut_r 32'h2cfe68c2, rfm_r 32'h2cfe68c2
+pass
+dut_r 32'hed39f33d, rfm_r 32'hed39f33d
+pass
+==============================
+Simulation Summary
+==============================
+Transactions : 100
+Matches      : 100
+Mismatches   : 0
+Pass Rate    : 100.0 %
+==============================
+$finish called from file "tb/tb_matrix.sv", line 406.
+$finish at simulation time              3038000
+"tb/matrix_assertion.sv", 81: matrix_tb.uu_matrix_assertion.cov_reset_res_stable, 304 attempts, 0 match
+"tb/matrix_assertion.sv", 99: matrix_tb.uu_matrix_assertion.cov_latency_mult, 304 attempts, 299 match
+"tb/matrix_assertion.sv", 113: matrix_tb.uu_matrix_assertion.cov_retention, 304 attempts, 0 match
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+
+ Coverage status: End of All Coverages ...
+
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 3038000 ps
+CPU Time:      0.430 seconds;       Data structure size:   0.0Mb
+Mon Jul 20 09:18:33 2026

@@ -1,0 +1,137 @@
+vcs -full64 -sverilog -l ./vcs_logger.log -kdb -debug_access+all +ntb_random_seed=random -timescale=1ns/1ps -cm line+cond+fsm+branch+tgl tb/matrix_datatypes.sv dpi/refmod.c tb/matrix_if.sv rtl/matrixmult.v tb/matrix_assertion.sv tb/matrix_coverage.sv tb/matrix_scb.sv tb/matrix_seqr.sv tb/matrix_drv.sv tb/matrix_mon.sv tb/tb_matrix.sv
+                         Chronologic VCS (TM)
+       Version X-2025.06-SP2_Full64 -- Mon Jul 20 09:18:37 2026
+
+                    Copyright (c) 1991 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+
+Warning-[UNK_COMP_ARG] Unknown compile time plus argument used
+  Unknown compile time plus argument 'ntb_random_seed=random' is ignored.
+
+ + use `+plusarg_save' to bind in runtime plusargs;
+ + use `+plusarg_ignore' to suppress this message.
+Parsing design file 'tb/matrix_datatypes.sv'
+Parsing design file 'tb/matrix_if.sv'
+Parsing design file 'rtl/matrixmult.v'
+Parsing design file 'tb/matrix_assertion.sv'
+Parsing design file 'tb/matrix_coverage.sv'
+Parsing design file 'tb/matrix_scb.sv'
+Parsing design file 'tb/matrix_seqr.sv'
+Parsing design file 'tb/matrix_drv.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/matrix_drv.sv, 1
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Parsing design file 'tb/matrix_mon.sv'
+Parsing design file 'tb/tb_matrix.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/tb_matrix.sv, 15
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Top Level Modules:
+       matrix_tb
+TimeScale is 1 ns / 1 ps
+VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Starting vcs inline pass...
+6 modules and 0 UDP read.
+recompiling package matrix_datatypes_pkg
+recompiling module matrix_if
+recompiling module matrix2x2_mult
+recompiling module matrix_assertion
+recompiling module matrix_coverage
+recompiling module matrix_tb
+All of 6 modules done
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+gcc -w  -pipe -fPIC -O -I/Tools/synopsys/vcs/X-2025.06-SP2/include     -c ../dpi/refmod.c
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib -L/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1 refmod.o   objs/amcQw_d.o   _384453_archive_1.so   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs      -lvcsnew -ldistsimclient -lsimprofile -lreader_common /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/libBA.a -luclinative /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       ./../simv.daidir/vc_hdrs.o  _vcs_pli_stub_.o   /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_save_restore_new.o /Tools/synopsys/verdi/X-2025.06-SP2/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+CPU time: 1.285 seconds to compile + .597 seconds to elab + .797 seconds to link
+Verdi KDB elaboration done and the database successfully generated
+./simv +FSDB=matrix2x2.fsdb -cm line+cond+fsm+branch+tgl
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP2_Full64; Runtime version X-2025.06-SP2_Full64;  Jul 20 09:18 2026
+
+ VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Test started...
+[TB] FSDB file = matrix2x2.fsdb
+*Verdi* Loading libsscore_vcs202506.so
+FSDB Dumper for VCS, Release Verdi_X-2025.06-SP2, Linux x86_64/64bit, 11/27/2025
+(C) 1996 - 2025 by Synopsys, Inc.
+*Verdi* : Create FSDB file 'matrix2x2.fsdb'
+*Verdi* : Begin traversing the scopes, layer (0).
+*Verdi* : End of traversing.
+
+# --------------------------
+#
+# EN Modes
+#
+# --------------------------
+# ---- en_mode: EN_BURST (3 transacoes) @ t=25000 ----
+[driver-log] en_mode=EN_BURST en=1 A=32'hafa95424 B=32'hd340cea3
+[driver-log] en_mode=EN_BURST en=1 A=32'h49ce7a0b B=32'hdae0253f
+[driver-log] en_mode=EN_BURST en=1 A=32'h6357c748 B=32'h0c42cc64
+# ---- en_mode: EN_DISABLE (3 transacoes) @ t=118000 ----
+[driver-log] en_mode=EN_DISABLE en=0 A=32'h5fecee92 B=32'h20364f25
+[driver-log] en_mode=EN_DISABLE en=0 A=32'haf9f43a3 B=32'ha63337df
+[driver-log] en_mode=EN_DISABLE en=0 A=32'h2926e543 B=32'h018c3239
+# ---- en_mode: EN_RANDOM (6 transacoes) @ t=208000 ----
+[driver-log] en_mode=EN_RANDOM en=0 A=32'hb11da1d0 B=32'h9739b3a2
+[driver-log] en_mode=EN_RANDOM en=1 A=32'h07fa968f B=32'h03d7315a
+[driver-log] en_mode=EN_RANDOM en=1 A=32'h6489ef03 B=32'h2a0dd272
+[driver-log] en_mode=EN_RANDOM en=0 A=32'h950e4f11 B=32'hfdc0b5e9
+[driver-log] en_mode=EN_RANDOM en=0 A=32'hedb2b160 B=32'heed0cef7
+[driver-log] en_mode=EN_RANDOM en=0 A=32'h7c8dc713 B=32'h4041b82f
+==============================
+Simulation Summary
+==============================
+Transactions : 12
+Matches      : 5
+Mismatches   : 7
+Pass Rate    : 41.7 %
+==============================
+$finish called from file "tb/tb_matrix.sv", line 406.
+$finish at simulation time               398000
+"tb/matrix_assertion.sv", 81: matrix_tb.uu_matrix_assertion.cov_reset_res_stable, 40 attempts, 0 match
+"tb/matrix_assertion.sv", 99: matrix_tb.uu_matrix_assertion.cov_latency_mult, 40 attempts, 15 match
+"tb/matrix_assertion.sv", 113: matrix_tb.uu_matrix_assertion.cov_retention, 40 attempts, 20 match
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+
+ Coverage status: End of All Coverages ...
+
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 398000 ps
+CPU Time:      0.540 seconds;       Data structure size:   0.0Mb
+Mon Jul 20 09:18:41 2026

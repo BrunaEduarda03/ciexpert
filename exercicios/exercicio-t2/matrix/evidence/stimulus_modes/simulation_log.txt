@@ -1,0 +1,262 @@
+vcs -full64 -sverilog -l ./vcs_logger.log -kdb -debug_access+all +ntb_random_seed=random -timescale=1ns/1ps -cm line+cond+fsm+branch+tgl tb/matrix_datatypes.sv dpi/refmod.c tb/matrix_if.sv rtl/matrixmult.v tb/matrix_assertion.sv tb/matrix_coverage.sv tb/matrix_scb.sv tb/matrix_seqr.sv tb/matrix_drv.sv tb/matrix_mon.sv tb/tb_matrix.sv
+                         Chronologic VCS (TM)
+       Version X-2025.06-SP2_Full64 -- Mon Jul 20 09:18:22 2026
+
+                    Copyright (c) 1991 - 2025 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+
+Warning-[UNK_COMP_ARG] Unknown compile time plus argument used
+  Unknown compile time plus argument 'ntb_random_seed=random' is ignored.
+
+ + use `+plusarg_save' to bind in runtime plusargs;
+ + use `+plusarg_ignore' to suppress this message.
+Parsing design file 'tb/matrix_datatypes.sv'
+Parsing design file 'tb/matrix_if.sv'
+Parsing design file 'rtl/matrixmult.v'
+Parsing design file 'tb/matrix_assertion.sv'
+Parsing design file 'tb/matrix_coverage.sv'
+Parsing design file 'tb/matrix_scb.sv'
+Parsing design file 'tb/matrix_seqr.sv'
+Parsing design file 'tb/matrix_drv.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/matrix_drv.sv, 1
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Parsing design file 'tb/matrix_mon.sv'
+Parsing design file 'tb/tb_matrix.sv'
+
+Note-[SV-LCM-PPWI] Package previously wildcard imported
+tb/tb_matrix.sv, 15
+$unit
+  Package 'matrix_datatypes_pkg' already wildcard imported. 
+  Ignoring matrix_datatypes_pkg::*
+  See the SystemVerilog LRM(1800-2005), section 19.2.1.
+
+Top Level Modules:
+       matrix_tb
+TimeScale is 1 ns / 1 ps
+VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Starting vcs inline pass...
+6 modules and 0 UDP read.
+recompiling package matrix_datatypes_pkg
+recompiling module matrix_if
+recompiling module matrix2x2_mult
+recompiling module matrix_assertion
+recompiling module matrix_coverage
+recompiling module matrix_tb
+All of 6 modules done
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+make[1]: Entering directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+gcc -w  -pipe -fPIC -O -I/Tools/synopsys/vcs/X-2025.06-SP2/include     -c ../dpi/refmod.c
+if [ -x ../simv ]; then chmod a-x ../simv; fi
+g++  -o ../simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib -L/Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1 refmod.o   objs/amcQw_d.o   _380729_archive_1.so   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs      -lvcsnew -ldistsimclient -lsimprofile -lreader_common /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/libBA.a -luclinative /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive       ./../simv.daidir/vc_hdrs.o  _vcs_pli_stub_.o   /Tools/synopsys/vcs/X-2025.06-SP2/linux64/lib/vcs_save_restore_new.o /Tools/synopsys/verdi/X-2025.06-SP2/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+../simv up to date
+make[1]: Leaving directory '/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/matrix/csrc'
+CPU time: 1.295 seconds to compile + .589 seconds to elab + .803 seconds to link
+Verdi KDB elaboration done and the database successfully generated
+./simv +FSDB=matrix2x2.fsdb -cm line+cond+fsm+branch+tgl
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP2_Full64; Runtime version X-2025.06-SP2_Full64;  Jul 20 09:18 2026
+
+ VCS Coverage Metrics Release X-2025.06-SP2_Full64 Copyright (c) 1991-2025 by Synopsys Inc.
+Test started...
+[TB] FSDB file = matrix2x2.fsdb
+*Verdi* Loading libsscore_vcs202506.so
+FSDB Dumper for VCS, Release Verdi_X-2025.06-SP2, Linux x86_64/64bit, 11/27/2025
+(C) 1996 - 2025 by Synopsys, Inc.
+*Verdi* : Create FSDB file 'matrix2x2.fsdb'
+*Verdi* : Begin traversing the scopes, layer (0).
+*Verdi* : End of traversing.
+
+# --------------------------
+#
+# Stimulus Modes
+#
+# --------------------------
+# ---- mode: BASIC @ t=25000 ----
+# ---------------------------
+# sequence generated (mode=BASIC)
+# ---------------------------
+[STIMULUS] mode=BASIC A=32'h01020304 B=32'h05060708
+
+# ---------------------------
+# refmod_matrix execution
+# ---------------------------
+# A = 0x01020304, B = 0x05060708, Res = 0x13162b32
+# p00=19 p01=22 p10=43 p11=50 (overflow se >255)
+dut_r 32'h13162b32, rfm_r 32'h13162b32
+pass
+# ---- mode: ZERO @ t=58000 ----
+# ---------------------------
+# sequence generated (mode=ZERO)
+# ---------------------------
+[STIMULUS] mode=ZERO A=32'h00000000 B=32'hdae0253f
+dut_r 32'h00000000, rfm_r 32'h00000000
+pass
+# ---- mode: MAX @ t=88000 ----
+# ---------------------------
+# sequence generated (mode=MAX)
+# ---------------------------
+[STIMULUS] mode=MAX A=32'hffffffff B=32'hffffffff
+
+# ---------------------------
+# refmod_matrix execution
+# ---------------------------
+# A = 0xffffffff, B = 0xffffffff, Res = 0x02020202
+# p00=130050 p01=130050 p10=130050 p11=130050 (overflow se >255)
+dut_r 32'h02020202, rfm_r 32'h02020202
+pass
+# ---- mode: OVERFLOW @ t=118000 ----
+# ---------------------------
+# sequence generated (mode=OVERFLOW)
+# ---------------------------
+[STIMULUS] mode=OVERFLOW A=32'hffff0000 B=32'hff00ff00
+
+# ---------------------------
+# refmod_matrix execution
+# ---------------------------
+# A = 0xffff0000, B = 0xff00ff00, Res = 0x02000000
+# p00=130050 p01=0 p10=0 p11=0 (overflow se >255)
+dut_r 32'h02000000, rfm_r 32'h02000000
+pass
+# ---- mode: NO_OVERFLOW @ t=148000 ----
+# ---------------------------
+# sequence generated (mode=NO_OVERFLOW)
+# ---------------------------
+[STIMULUS] mode=NO_OVERFLOW A=32'h03090104 B=32'h0404000b
+
+# ---------------------------
+# refmod_matrix execution
+# ---------------------------
+# A = 0x03090104, B = 0x0404000b, Res = 0x0c6f0430
+# p00=12 p01=111 p10=4 p11=48 (overflow se >255)
+dut_r 32'h0c6f0430, rfm_r 32'h0c6f0430
+pass
+# ---- mode: PATTERN @ t=178000 ----
+# ---------------------------
+# sequence generated (mode=PATTERN)
+# ---------------------------
+[STIMULUS] mode=PATTERN A=32'haaaaaaaa B=32'h55555555
+dut_r 32'he4e4e4e4, rfm_r 32'he4e4e4e4
+pass
+# ---- mode: SMALL @ t=208000 ----
+# ---------------------------
+# sequence generated (mode=SMALL)
+# ---------------------------
+[STIMULUS] mode=SMALL A=32'h0000001b B=32'h00000045
+dut_r 32'h00000047, rfm_r 32'h00000047
+pass
+# ---- mode: BIG @ t=238000 ----
+# ---------------------------
+# sequence generated (mode=BIG)
+# ---------------------------
+[STIMULUS] mode=BIG A=32'hf4d00ef4 B=32'hf333cd6c
+dut_r 32'h2c5caeba, rfm_r 32'h2c5caeba
+pass
+# ---- mode: MINMAX @ t=268000 ----
+# ---------------------------
+# sequence generated (mode=MINMAX)
+# ---------------------------
+[STIMULUS] mode=MINMAX A=32'hffffffff B=32'hffffffff
+dut_r 32'h02020202, rfm_r 32'h02020202
+pass
+# ---- mode: RANDOM (5 transacoes) @ t=298000 ----
+# ---------------------------
+# sequence generated (mode=RANDOM)
+# ---------------------------
+[STIMULUS] mode=RANDOM A=32'hd0665096 B=32'h8fba4fbb
+dut_r 32'haaa2fab2, rfm_r 32'haaa2fab2
+pass
+# ---------------------------
+# sequence generated (mode=RANDOM)
+# ---------------------------
+[STIMULUS] mode=RANDOM A=32'h7c8dc713 B=32'h4041b82f
+dut_r 32'h585f6804, rfm_r 32'h585f6804
+pass
+# ---------------------------
+# sequence generated (mode=RANDOM)
+# ---------------------------
+[STIMULUS] mode=RANDOM A=32'ha31c6a75 B=32'h488a5492
+dut_r 32'h08d634de, rfm_r 32'h08d634de
+pass
+# ---------------------------
+# sequence generated (mode=RANDOM)
+# ---------------------------
+[STIMULUS] mode=RANDOM A=32'h011eb239 B=32'h73cc3d29
+dut_r 32'h999a8bf9, rfm_r 32'h999a8bf9
+pass
+# ---------------------------
+# sequence generated (mode=RANDOM)
+# ---------------------------
+[STIMULUS] mode=RANDOM A=32'ha141617f B=32'hbdae92c4
+dut_r 32'hef320b2a, rfm_r 32'hef320b2a
+pass
+
+# --------------------------
+#
+# Directed Coverage Closure
+#
+# --------------------------
+# ---- directed D1: overflow held with en=0 @ t=448000 ----
+dut_r 32'h02000000, rfm_r 32'h02000000
+pass
+dut_r 32'h02000000, rfm_r 32'h02000000
+pass
+# ---- directed D1b: B=0 (A!=0) @ t=508000 ----
+[driver-log] en_mode=EN_BURST en=1 A=32'hdeadbeef B=32'h00000000
+dut_r 32'h00000000, rfm_r 32'h00000000
+pass
+# ---- directed D2: no_overflow held with en=0 @ t=538000 ----
+dut_r 32'h20086529, rfm_r 32'h20086529
+pass
+dut_r 32'h20086529, rfm_r 32'h20086529
+pass
+# ---- directed D3: en=0 durante reset (2o pulso) @ t=598000 ----
+# ---- directed D4: en=1 durante reset (3o pulso) @ t=645000 ----
+==============================
+Simulation Summary
+==============================
+Transactions : 19
+Matches      : 19
+Mismatches   : 0
+Pass Rate    : 100.0 %
+==============================
+$finish called from file "tb/tb_matrix.sv", line 406.
+$finish at simulation time               705000
+"tb/matrix_assertion.sv", 81: matrix_tb.uu_matrix_assertion.cov_reset_res_stable, 70 attempts, 2 match
+"tb/matrix_assertion.sv", 99: matrix_tb.uu_matrix_assertion.cov_latency_mult, 70 attempts, 51 match
+"tb/matrix_assertion.sv", 113: matrix_tb.uu_matrix_assertion.cov_retention, 70 attempts, 8 match
+
+---------------------------------------------------------------------------
+VCS Coverage Metrics: during simulation line, cond, FSM, branch, tgl was monitored
+---------------------------------------------------------------------------
+
+ Coverage status: End of All Coverages ...
+
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 705000 ps
+CPU Time:      0.530 seconds;       Data structure size:   0.0Mb
+Mon Jul 20 09:18:26 2026

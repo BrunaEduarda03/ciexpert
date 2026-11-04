@@ -1,0 +1,62 @@
+# Atividade 8 - Transicoes extraidas do adder32.fsdb via fsdbreport (Verdi CLI, sem GUI)
+# Comando: fsdbreport adder32.fsdb -s /adder_tb/uu_adder32_if/<sinal> -csv
+
+=== clk ===
+Time(1ps),/adder_tb/uu_adder32_if/clk
+0,0
+5000,1
+10000,0
+15000,1
+20000,0
+25000,1
+30000,0
+35000,1
+40000,0
+45000,1
+50000,0
+55000,1
+60000,0
+65000,1
+70000,0
+75000,1
+80000,0
+85000,1
+90000,0
+95000,1
+98000,1
+=== reset_n ===
+Time(1ps),/adder_tb/uu_adder32_if/reset_n
+0,x
+13000,0
+23000,1
+98000,1
+=== en ===
+Time(1ps),/adder_tb/uu_adder32_if/en
+0,x
+37000,1
+98000,1
+=== op_a ===
+Time(1ps),/adder_tb/uu_adder32_if/op_a
+0,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+37000,10101111101010010101010000100100
+67000,01001001110011100111101000001011
+98000,01001001110011100111101000001011
+=== op_b ===
+Time(1ps),/adder_tb/uu_adder32_if/op_b
+0,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+37000,11010011010000001100111010100011
+67000,11011010111000000010010100111111
+98000,11011010111000000010010100111111
+=== adder_out ===
+Time(1ps),/adder_tb/uu_adder32_if/adder_out
+0,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+13000,00000000000000000000000000000000
+45000,10000010111010100010001011000111
+75000,00100100101011101001111101001010
+98000,00100100101011101001111101001010
+=== carry_out ===
+Time(1ps),/adder_tb/uu_adder32_if/carry_out
+0,x
+13000,0
+45000,1
+98000,1

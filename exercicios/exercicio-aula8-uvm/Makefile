@@ -1,10 +1,17 @@
-BLOCKNAME = blockname
+BLOCKNAME = adder32
 
 #
 # RTL
 #
 RTL_DIR   ?= ./rtl
-DUT_FILES := $(wildcard $(RTL_DIR)/*.sv)
+DUT_FILES := $(wildcard $(RTL_DIR)/*.sv) $(wildcard $(RTL_DIR)/*.v)
+
+# DPI (reference model)
+DPI_DIR   ?= ./dpi
+C_FILES   := $(wildcard $(DPI_DIR)/*.c)
+
+# interface
+IF_FILES  = tb/$(BLOCKNAME)_if.sv
 
 #
 # Verification
@@ -32,11 +39,12 @@ UVM_TESTNAME = baseline # options: ...
 SIM            = vcs
 OUT_DIR        = build/$(SIM)
 LOG_DIR        = $(OUT_DIR)/logs
-SRC_BUNDLE     = $(PKG_FILES) $(DUT_FILES) $(TB_TOP_FILE)
-VCS_FLAGS_BASE = -sverilog -full64 -l $(LOG_DIR)/vcs_comp.log -kdb -debug_access+all +incdir+tb/ -timescale=1ns/1ps
+SRC_BUNDLE     = $(PKG_FILES) $(C_FILES) $(IF_FILES) $(DUT_FILES) $(TB_TOP_FILE)
+VCS_FLAGS_BASE = -sverilog -full64 -l $(LOG_DIR)/vcs_comp.log -kdb -debug_access+all +incdir+tb/ +incdir+tb/agent +incdir+tb/env +incdir+tb/tests -timescale=1ns/1ps +define+$(UVM_DEFINES)
 VCS_UVM_FLAGS  = -ntb_opts $(UVM_VERSION)
 VCS_SEED_FLAG  = +ntb_random_seed=$(UVM_SEED)
-VCS_RUN_FLAGS  = $(VCS_FLAGS_BASE) $(VCS_UVM_FLAGS)	$(VCS_SEED_FLAG)
+VCS_TEST_FLAG  = +UVM_TESTNAME=$(UVM_TESTNAME)
+VCS_RUN_FLAGS  = $(VCS_FLAGS_BASE) $(VCS_UVM_FLAGS)	$(VCS_SEED_FLAG) $(VCS_TEST_FLAG)
 
 # compiling
 vcs_compil:

@@ -4,16 +4,16 @@ srcTBInvokeSim
 verdiSetActWin -dock widgetDock_<Member>
 verdiSetActWin -dock widgetDock_MTB_SOURCE_TAB_1
 simSetSimulator "-vcssv" -exec \
-           "/home/gabriel.magalhaes/workspace/synopsis-dv-track-prv/prj/0x04-adder2p0/simv" \
+           "/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/adder2p0/simv" \
            -args
 debImport "-dbdir" \
-          "/home/gabriel.magalhaes/workspace/synopsis-dv-track-prv/prj/0x04-adder2p0/simv.daidir"
+          "/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/adder2p0/simv.daidir"
 srcTBDelAllBrkPnt
 wvCreateWindow
 verdiSetActWin -win $_nWave3
 wvSetPosition -win $_nWave3 {("G1" 0)}
 wvOpenFile -win $_nWave3 \
-           {/home/gabriel.magalhaes/workspace/synopsis-dv-track-prv/prj/0x04-adder2p0/cmd/adder32.fsdb}
+           {/home/bruna.maciel/Bruna_Maciel_DV_Atividade2/adder2p0/adder32.fsdb}
 srcHBSelect "adder_tb" -win $_nTrace1
 verdiSetActWin -dock widgetDock_<Inst._Tree>
 srcHBSelect "adder_tb.uu_adder32_if" -win $_nTrace1

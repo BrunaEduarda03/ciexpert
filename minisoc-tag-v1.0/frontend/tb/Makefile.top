@@ -1,0 +1,17 @@
+MINISOC_TOP_FILES = \
+	../rtl/minisoc_aes/minisoc_aes_key_exp.sv \
+	../rtl/minisoc_aes/minisoc_aes_dp.sv      \
+	../rtl/minisoc_aes/minisoc_aes_top.sv  \
+	../rtl/minisoc_mem/minisoc_memory.sv      \
+	../rtl/minisoc_pll/minisoc_pll_mock.sv    \
+	../rtl/minisoc_spi/minisoc_spi.sv         \
+	../rtl/minisoc_top.sv
+
+MINISOC_TOP_TB = minisoc_top_tb.sv
+
+VCS_KDB   = -kdb 
+VCS_DEBUG = -debug_access+all +ntb_random_seed=random
+VCS_FLAGS = -full64 -sverilog -l ./vcs_logger.log $(VCS_KDB) $(VCS_DEBUG) -timescale=1ns/1ps
+
+vcs_comp: 
+	vcs $(VCS_FLAGS) $(MINISOC_TOP_FILES) $(MINISOC_TOP_TB)

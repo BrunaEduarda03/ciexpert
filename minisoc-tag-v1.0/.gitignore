@@ -1,0 +1,25 @@
+# Saida de simulacao (VCS / Verdi)
+verif/sim/
+csrc/
+simv
+simv.daidir/
+*.log
+*.fsdb
+*.vcd
+*.vpd
+ucli.key
+verdiLog/
+novas.*
+vc_hdrs.h
+DVEfiles/
+AN.DB/
+
+# Reference model compilado
+verif/tb/refmod/cpp/prog
+*.o
+*.so
+
+# Sistema / editor
+.DS_Store
+*.swp
+~$*

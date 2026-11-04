@@ -1,1 +1,21 @@
 .DS_Store
+
+# VCS / Verdi (artefatos de simulacao)
+csrc/
+simv
+simv.daidir/
+simv.vdb/
+*.daidir/
+build/
+*.fsdb
+*.fsdb.*
+*.vpd
+*.vcd
+ucli.key
+vc_hdrs.h
+verdiLog/
+vdCovLog/
+fsdbreportLog/
+urgReport/
+novas_dump.log
+.vcs_checkpoint_shared_memory*

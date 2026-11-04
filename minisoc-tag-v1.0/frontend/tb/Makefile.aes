@@ -1,0 +1,15 @@
+
+MINISOC_AES_FILES = \
+	../rtl/minisoc_aes/minisoc_aes_dp.sv				\
+	../rtl/minisoc_aes/minisoc_aes_key_exp.sv	\
+	../rtl/minisoc_aes/minisoc_aes_top.sv
+
+MINISOC_AES_TB = \
+	./minisoc_aes_top_tb.sv
+
+VCS_KDB   = -kdb 
+VCS_DEBUG = -debug_access+all +ntb_random_seed=random
+VCS_FLAGS = -full64 -sverilog -l ./vcs_logger.log $(VCS_KDB) $(VCS_DEBUG) -timescale=1ns/1ps
+
+vcs_comp: 
+	vcs $(VCS_FLAGS) $(MINISOC_AES_FILES) $(MINISOC_AES_TB)
