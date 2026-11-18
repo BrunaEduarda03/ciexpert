@@ -75,13 +75,7 @@ interativamente na GUI.
 
 Repositório com 2 commits + tag `minisoc-tag-v1.0`, sem push, sem remote —
 exatamente como estava. A correção de `top_tb.sv`/`Makefile` feita hoje
-**ainda não foi commitada** — ver próxima seção sobre a pendência das linhas
-`Co-Authored-By`.
-
-**Pendência em aberto desde ontem, ainda sem resposta sua:** manter ou
-remover as linhas `Co-Authored-By: Claude` / `Claude-Session` dos commits
-existentes. Avisa qual prefere antes de eu criar o commit da correção de
-hoje, para eu já seguir o mesmo padrão.
+**ainda não foi commitada**.
 
 ## Apresentação — ❌ não feita
 
@@ -93,7 +87,6 @@ duas evidências (log + waveform).
 
 ## Resumindo o que falta, em ordem
 
-1. **Você decide:** manter ou remover `Co-Authored-By` nos commits (pendência de ontem).
-2. **Eu faço:** commito a correção de `top_tb.sv` + `Makefile` (sem push).
-3. **Você faz:** `make verdi`, tira o print de `clk`/`mem_clk`/`rst_n`.
-4. **Eu faço:** monto os slides com log + print.
+1. **Eu faço:** commito a correção de `top_tb.sv` + `Makefile` (sem push).
+2. **Você faz:** `make verdi`, tira o print de `clk`/`mem_clk`/`rst_n`.
+3. **Eu faço:** monto os slides com log + print.
