@@ -1,0 +1,72 @@
+Command: /home/bruna.maciel/minisoc-tag-v1.0/verif/sim/./simv +UVM_TESTNAME=minisoc_smoke_test +ntb_random_seed=1 +UVM_VERBOSITY=UVM_MEDIUM +UVM_NO_RELNOTES +FSDB -l /home/bruna.maciel/minisoc-tag-v1.0/verif/sim/logs/minisoc_smoke_test_1.log
+Chronologic VCS simulator copyright 1991-2025
+Contains Synopsys proprietary information.
+Compiler version X-2025.06-SP2_Full64; Runtime version X-2025.06-SP2_Full64;  Oct 29 09:22 2026
+UVM_INFO @ 0: reporter [RNTST] Running test minisoc_smoke_test...
+*Verdi* Loading libsscore_vcs202506.so
+FSDB Dumper for VCS, Release Verdi_X-2025.06-SP2, Linux x86_64/64bit, 11/27/2025
+(C) 1996 - 2025 by Synopsys, Inc.
+*Verdi* : Create FSDB file 'waves.fsdb'
+*Verdi* : Begin traversing the scope (top_tb), layer (0).
+*Verdi* : Enable +all dumping.
+*Verdi* : End of traversing.
+UVM_INFO /Tools/synopsys/vcs/X-2025.06-SP2/etc/uvm-1.2/base/uvm_root.svh(594) @ 0: reporter [UVMTOP] UVM testbench topology:
+----------------------------------------------------------
+Name                   Type                    Size  Value
+----------------------------------------------------------
+uvm_test_top           minisoc_smoke_test      -     @354 
+  env                  minisoc_env             -     @379 
+    mem_clk_agt        clk_agent               -     @405 
+      drv              clk_driver              -     @425 
+        rsp_port       uvm_analysis_port       -     @444 
+        seq_item_port  uvm_seq_item_pull_port  -     @434 
+    ref_clk_agt        clk_agent               -     @396 
+      drv              clk_driver              -     @456 
+        rsp_port       uvm_analysis_port       -     @475 
+        seq_item_port  uvm_seq_item_pull_port  -     @465 
+    rst_agt            rst_agent               -     @414 
+      drv              rst_driver              -     @487 
+        rsp_port       uvm_analysis_port       -     @506 
+        seq_item_port  uvm_seq_item_pull_port  -     @496 
+----------------------------------------------------------
+
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_base_test.sv(51) @ 0: uvm_test_top [minisoc_smoke_test] Configuracao: ref_clk=500 ps | mem_clk=10000 ps | reset inicial=39 ciclos
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/clk/clk_driver.sv(33) @ 0: uvm_test_top.env.mem_clk_agt.drv [clk_driver] Gerando clock: periodo=10000 ps (100.0 MHz), duty=50%, atraso=0 ps
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/clk/clk_driver.sv(33) @ 0: uvm_test_top.env.ref_clk_agt.drv [clk_driver] Gerando clock: periodo=500 ps (2000.0 MHz), duty=50%, atraso=0 ps
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/rst/rst_driver.sv(39) @ 0: uvm_test_top.env.rst_agt.drv [rst_driver] rst_n=0 (reset #1) por 39 ciclos de clk
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/rst/rst_driver.sv(48) @ 20000: uvm_test_top.env.rst_agt.drv [rst_driver] rst_n=1 (reset #1 liberado)
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_smoke_test.sv(32) @ 20000: uvm_test_top [SMOKE] Reset inicial liberado
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_smoke_test.sv(78) @ 20000: uvm_test_top [SMOKE_CLK] clk (referencia): periodo medido 500.0 ps (2000.0 MHz) - OK
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_smoke_test.sv(78) @ 35000: uvm_test_top [SMOKE_CLK] mem_clk: periodo medido 10000.0 ps (100.0 MHz) - OK
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/rst/rst_driver.sv(39) @ 69000: uvm_test_top.env.rst_agt.drv [rst_driver] rst_n=0 (reset #2) por 27 ciclos de clk
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/agents/rst/rst_driver.sv(48) @ 83000: uvm_test_top.env.rst_agt.drv [rst_driver] rst_n=1 (reset #2 liberado)
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_smoke_test.sv(56) @ 93000: uvm_test_top [SMOKE] Checagens: 57 executadas, 0 falhas
+UVM_INFO /Tools/synopsys/vcs/X-2025.06-SP2/etc/uvm-1.2/base/uvm_objection.svh(1276) @ 93000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO /home/bruna.maciel/minisoc-tag-v1.0/verif/tb/tests/minisoc_base_test.sv(63) @ 93000: uvm_test_top [RESULT] *** TEST PASSED: minisoc_smoke_test ***
+UVM_INFO /Tools/synopsys/vcs/X-2025.06-SP2/etc/uvm-1.2/base/uvm_report_server.svh(904) @ 93000: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :   15
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[RESULT]     1
+[RNTST]     1
+[SMOKE]     2
+[SMOKE_CLK]     2
+[TEST_DONE]     1
+[UVMTOP]     1
+[clk_driver]     2
+[minisoc_smoke_test]     1
+[rst_driver]     4
+
+$finish called from file "/Tools/synopsys/vcs/X-2025.06-SP2/etc/uvm-1.2/base/uvm_root.svh", line 532.
+$finish at simulation time                92750
+"/home/bruna.maciel/minisoc-tag-v1.0/verif/tb/top_assertions.sv", 48: top_tb.dut.u_sva.C01_reset_release, 185 attempts, 2 match
+"/home/bruna.maciel/minisoc-tag-v1.0/verif/tb/top_assertions.sv", 49: top_tb.dut.u_sva.C01_reset_runtime, 185 attempts, 1 match
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 92750 ps
+CPU Time:      0.580 seconds;       Data structure size:   0.6Mb
+Thu Oct 29 09:22:09 2026

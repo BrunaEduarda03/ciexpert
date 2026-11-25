@@ -16,6 +16,9 @@ Ordem sugerida de leitura:
 7. [07-makefile-vcs.md](07-makefile-vcs.md) — `Makefile`, flags do VCS, como rodar
 8. [08-evidencias-outubro.md](08-evidencias-outubro.md) — o log real de 29/10, linha a linha
 9. [09-status-entregas.md](09-status-entregas.md) — status de cada entrega e o que foi feito hoje no servidor
+10. [10-modelo-agent-monitor-env.md](10-modelo-agent-monitor-env.md) — gabarito genérico para decorar: item, driver, monitor, agent, env
+11. [11-do-zero-clk-rst-ao-spi.md](11-do-zero-clk-rst-ao-spi.md) — guia didático: herança, fases, config_db, clk/rst passo a passo (de dentro para fora) e roteiro do SPI
+12. [12-plano-novembro.md](12-plano-novembro.md) — o que entregar até 30/11: VIP SPI, VIP MEMORY DATA, config do DUT, VPLAN v2, testes, cronograma dia a dia
 
 Todo o conteúdo abaixo foi escrito a partir do código real em `verif/tb/` após
 rodar no VCS X-2025.06-SP2 neste servidor (`srv-microeletronica3`), não é

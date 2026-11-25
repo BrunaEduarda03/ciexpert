@@ -1,0 +1,13 @@
+
+MINISOC_MEM_FILES = \
+	../rtl/minisoc_mem/minisoc_memory.sv
+
+MINISOC_MEM_TB = \
+	./minisoc_memory_tb.sv
+
+VCS_KDB   = -kdb 
+VCS_DEBUG = -debug_access+all +ntb_random_seed=random
+VCS_FLAGS = -full64 -sverilog -l ./vcs_logger.log $(VCS_KDB) $(VCS_DEBUG) -timescale=1ns/1ps
+
+vcs_comp: 
+	vcs $(VCS_FLAGS) $(MINISOC_MEM_FILES) $(MINISOC_MEM_TB)
