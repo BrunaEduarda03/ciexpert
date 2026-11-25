@@ -1,0 +1,13 @@
+
+MINISOC_PLL_FILES = \
+	../rtl/minisoc_pll/minisoc_pll_mock.sv
+
+MINISOC_PLL_TB = \
+	./minisoc_pll_mock_tb.sv
+
+VCS_KDB   = -kdb 
+VCS_DEBUG = -debug_access+all +ntb_random_seed=random
+VCS_FLAGS = -full64 -sverilog -l ./vcs_logger.log $(VCS_KDB) $(VCS_DEBUG) -timescale=1ns/1ps
+
+vcs_comp: 
+	vcs $(VCS_FLAGS) $(MINISOC_PLL_FILES) $(MINISOC_PLL_TB)
